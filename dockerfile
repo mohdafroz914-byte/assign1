@@ -1,17 +1,7 @@
-FROM ubuntu:18.04
-
-LABEL purpose="Trivy vulnerability scanning lab"
-
-RUN apt-get update && \
-    apt-get install -y \
-        curl \
-        wget \
-        openssl \
-        vim && \
-    rm -rf /var/lib/apt/lists/*
+FROM node:14.21.3-buster
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
 
-CMD ["bash"]
+CMD ["node", "--version"]
