@@ -1,4 +1,4 @@
-name: Trivy Security Scan
+name: Trivy Repository Scan
 
 on:
   push:
@@ -7,25 +7,27 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   trivy-scan:
-    name: Trivy Vulnerability Scan
+    name: Scan Repository
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Run Trivy filesystem scan
-        uses: aquasecurity/trivy-action@master
+      - name: Run Trivy repository scan
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          scanners: 'vuln,secret'
-          severity: 'CRITICAL,HIGH'
-          ignore-unfixed: true
-          format: 'table'
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,secret,misconfig
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          ignore-unfixed: "false"
+          exit-code: "0"
+          format: table
